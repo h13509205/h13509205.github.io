@@ -1,0 +1,7 @@
+# Site settings
+title: 52saber
+description: Personal Blog
+keywords: Learning
+author: hwt
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "" # the base hostname & protocol for your site
