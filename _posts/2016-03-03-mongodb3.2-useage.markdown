@@ -1,0 +1,45 @@
+---
+title: "Use MongoDB 3.2 in java"
+subtitle: "翻译"
+author: "hwt"
+avatar: "img/authors/hwt.jpg"
+image: "img/20160303.jpg"
+date:   2016-03-03 14:13:12
+---
+
+### MongoDB 3.2 的用法  
+# 1.简介  
+MongoDB是一个开源的文档型数据库，它提供了高性能，高可用性，[自动伸缩](https://en.wikipedia.org/wiki/Autoscaling)等特性。MongoDB可以不需要使用ORM(Object Relational Mapping)来做开发。  
+
+# 2.文档(Documents)
+一条MongoDB的记录就是指一个文档，它是指一种由键值对组成的数据结构，有点类似于JSON 对象。文档中的值可以是其他文档，或是数组，或是由许多文档组成的文档数组。  
+示例如下：  
+<pre><code>  
+    {  
+       "_id" : ObjectId("54c955492b7c8eb21818bd09"),  
+       "address" : {  
+          "street" : "2 Avenue",  
+          "zipcode" : "10075",  
+          "building" : "1480",  
+          "coord" : [ -73.9557413, 40.7720266 ]  
+       },  
+       "borough" : "Manhattan",  
+       "cuisine" : "Italian",  
+       "grades" : [  
+          {  
+             "date" : ISODate("2014-10-01T00:00:00Z"),  
+             "grade" : "A",  
+             "score" : 11  
+          },  
+          {  
+             "date" : ISODate("2014-01-16T00:00:00Z"),  
+             "grade" : "B",  
+             "score" : 17  
+          }  
+       ],  
+       "name" : "Vella",  
+       "restaurant_id" : "41704620"  
+    }  
+</code></pre>  
+# 3.集合(Collections)  
+MongoDB将文档存在集合中，就像关系型数据库中一条一条数据存在表中一样。但是MongoDB集合和关系型数据库的表不一样，集合中的文档并不需要有相同的模式（就是不是每个文档中都有相同的字段）。
