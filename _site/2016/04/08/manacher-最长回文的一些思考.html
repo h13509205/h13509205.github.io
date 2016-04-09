@@ -1,0 +1,47 @@
+<h4 id="section">一些看法</h4>
+
+<p>网上也看了一些manacher的实现，感觉实现起来有点难，自己写代码的时候也有点磕磕绊绊。</p>
+
+<p>这个算法主要思想就是使用更大的容量，将计算回文需要考虑的回文长度的奇偶性全部处理为只要考虑奇数长度的。<br />
+如回文<code class="highlighter-rouge">abba</code> 将其扩充为 <code class="highlighter-rouge">#a#b#b#a#</code> ，这样就只考虑奇数长度的回文即可。<br />
+计算得到扩充后字符串中以每个字符为中点的最大回文长度半径（包括自身）为<code class="highlighter-rouge">[1, 2, 1, 2, 5, 2, 1, 2, 1]</code> ,将其全部减一之后就是以该点为中点， 得到的最长回文字串。<br />
+当然我们还可以使用之前计算好的值， 来保证这个算法的时间复杂度为O(n)时间<br />
+如果我们知道了上一个能够覆盖到最远距离的字符， 那么我们就能知道这个最远距离能够覆盖到字符串的第right位，<br />
+而且我们可以知道这个最远的字符在字符串的第idx位，</p>
+
+<p>1.那么我们在求第i个字符的最大回文长度的时候（i &gt; idx），我们就可以知道这个时候最短的回文长度和2*idx-i这个点（和idx对称的那个点）的一样长<br />
+2.如果由对称点推断出的i的最短回文长度无法覆盖到right时，我们就可以知道i点的最大回文长度就为其对称点的最大回文长度；<br />
+3.如果i点可以覆盖到right时，说明最大回文长度可能更长，<br />
+4.如果更长，那么新的idx就为当前点i，right也重新更新为新的right点，<br />
+5.如果没有更长，那么i点的最大回文长度就为其对称点的最大回文长度，不跟新idx与right（选择覆盖范围最大的，包含right的idx）<br />
+6.计算下一个i+1的最长回文长度</p>
+
+<p>这样保证了在所有循环计算点i的最大回文长度时，每个right点只被计算了1次，其他也没有影响效率的操作了，可以得出O(n)的时间复杂度。<br />
+下面贴出我写的萌萌哒代码（和网上的不太一样，别人的更简练，我这个思路还算清晰）</p>
+<pre><code>  
+public int[] helper(String ss) {  
+    	int[] ans = new int[ss.length()];  
+    	ans[0] = 1;  
+    	int id = 0;  
+    	int right = 0;  
+    	for(int i = 1; i &lt; ans.length; i++) {  
+    		int radius = 1;  
+    		if(i &lt; right &amp;&amp; ans[2*id-i]+i-1 &lt; right) {   
+    			ans[i] = ans[2*id-i];  
+    			continue;  
+    		}else if(i &lt; right &amp;&amp; 2*id-i &gt;= 0 &amp;&amp; ans[2*id-i]+i-1 == right) {  
+    			radius = ans[2*id-i];  
+    		}  
+    		while(i-radius &gt;= 0 &amp;&amp; i+radius &lt;ans.length &amp;&amp; ss.charAt(i+radius) == ss.charAt(i-radius)) {  
+    			radius++;  
+    		}    
+    		ans[i] = radius;  
+    		if(2*id-i &gt;= 0 &amp;&amp; radius == ans[2*id-i]) {  
+    			continue;  
+    		}  
+    		right = i+radius-1;  
+    		id = i;  
+    	}  
+    	return ans;  
+    }  
+</code></pre>
